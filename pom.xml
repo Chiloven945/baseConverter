@@ -16,7 +16,7 @@
     </properties>
 
     <dependencies>
-        <!-- JavaFX模块 -->
+        <!-- JavaFX Module -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -35,17 +35,14 @@
             <version>2.20.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
-        </dependency>
-
+        <!-- ikonli -->
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
             <version>12.2.0</version>
         </dependency>
+
+        <!-- ikonli FluentUI Pack -->
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-fluentui-pack</artifactId> <!-- 这里可以换成 Fluent pack -->
@@ -57,7 +54,7 @@
     <build>
         <plugins>
 
-            <!-- 构建胖JAR包 -->
+            <!-- Build Fat Jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -70,13 +67,14 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>chiloven.baseconverter.baseConverter</mainClass> <!-- 你的主类 -->
                                 </transformer>
-                                <!-- 保持META-INF/services文件，Ikonli依赖服务发现 -->
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <!-- 保留字体资源 -->
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                                     <resource>org/kordamp/ikonli</resource>
                                     <file>${project.build.outputDirectory}/org/kordamp/ikonli</file>
                                 </transformer>
