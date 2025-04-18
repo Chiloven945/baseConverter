@@ -1,12 +1,10 @@
 package chiloven.baseconverter;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.BorderPane;
@@ -35,6 +33,7 @@ public class convertController {
 
     @FXML
     public void initialize() {
+        // Mapping the buttons
         buttonMap.put('0', button0);
         buttonMap.put('1', button1);
         buttonMap.put('2', button2);
@@ -66,6 +65,7 @@ public class convertController {
         baseUtils.updateButtonsForBase(buttonMap, fromField.getText().trim()); // Initial call
     }
 
+    // Switch the text in the fromField and toField
     @FXML
     private void handleExchange() {
         String temp = fromField.getText();
@@ -73,6 +73,7 @@ public class convertController {
         toField.setText(temp);
     }
 
+    // Action when button was clicked
     @FXML
     private void handleButtonClick(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
@@ -80,11 +81,13 @@ public class convertController {
         inputField.setText(currentText + clickedButton.getText());
     }
 
+    // Clear the inputField
     @FXML
     private void handleClear() {
         inputField.clear();
     }
 
+    // Remove the last character in the inputField
     @FXML
     private void handleBackspace() {
         String currentText = inputField.getText();
@@ -93,9 +96,13 @@ public class convertController {
         }
     }
 
+    // Execute the calculation
     @FXML
     private void handleEnter() {
+
+        // Ignore the action when the inputField is empty
         if (Objects.equals(inputField.getText(), "")) {
+            logger.info("Nothing in the inputField, skipping the process.");
             inputField.setText("0");
             return;
         }
@@ -107,26 +114,29 @@ public class convertController {
         try {
             fromBase = Integer.parseInt(fromText);
             toBase = Integer.parseInt(toText);
+            // Determine the base is out of range or not
             if (fromBase < 2 || fromBase > 16 || toBase < 2 || toBase > 16) {
                 throw new NumberFormatException("Base needs to be between 2 and 16");
             }
         } catch (NumberFormatException e) {
-            inputField.setText("0");
             alertModule.showAlert("Base Format Error", "Invalid bases, please enter an integer between 2 and 16!", Alert.AlertType.ERROR);
             logger.error("Base format error occurred", e);
             return;
         }
 
-        String input = inputField.getText();
-        String result = conversionUtils.convertBase(input, fromBase, toBase);
+        // Convert the number
+        String result = conversionUtils.convertBase(inputField.getText(), fromBase, toBase);
         inputField.setText(result);
     }
 
+    // Close the program
     @FXML
     private void handleClose() {
+        logger.info("Closing the program...");
         Platform.exit();
     }
 
+    // Showing an alert of about
     @FXML
     private void handleAbout() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
